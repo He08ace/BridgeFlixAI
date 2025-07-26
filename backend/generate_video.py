@@ -1,1 +1,0 @@
-# generate_video.py logic placeholder
