@@ -1,0 +1,1 @@
+# generate_scene_assets.py logic placeholder

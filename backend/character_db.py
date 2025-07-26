@@ -1,0 +1,1 @@
+# character_db.py logic placeholder
