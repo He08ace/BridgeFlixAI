@@ -1,16 +1,10 @@
 import requests
 import os
 
-ELEVEN_API_KEY = "sk_d58c4c8cf3e18fece726e6664db6f9efae76ed2de3cb893c"
+ELEVEN_API_KEY = "sk_c08a7983b49a092b308bcc595d84f17ae0ff3ff5527525db"
 
 voice_ids = [
-    "h2sm0NbeIZXHBzJOMYcQ", "9wYX8b0wRvLUEYtGuzP5", "ewxUvnyvvOehYjKjUVKC",
-    "rujGCruvEqncqHTi6l0q", "rdDUoCO1RjwdMmNjmhHV", "6OzrBCQf8cjERkYgzSg8",
-    "NySnOmeQIeaUH8egRnrQ", "Z5JpFCNFIz8Nhe4KEikq", "gYr8yTP0q4RkX1HnzQfX",
-    "6aDn1KB0hjpdcocrUkmq", "rWyjfFeMZ6PxkHqD3wGC", "xkDz8dF9GIt1kG06c9Of",
-    "CVRACyqNcQefTlxMj9bt", "gKDyLTHvXI2M1dVbbuuE", "pGuQKOUQJTbKXVCJWAqL",
-    "85DL3i4Z7PIWbcOYSlQl", "FGlwXbxtvHyuRiEubkZg", "4ruSPR79OgfZINYizp0U",
-    "zWoalRDt5TZrmW4ROIA7", "2qfp6zPuviqeCOZIE9RZ"
+    "h2sm0NbeIZXHBzJOMYcQ", "9wYX8b0wRvLUEYtGuzP5", "ewxUvnyvvOehYjKjUVKC"
 ]
 
 sample_text = "Welcome to BridgeFlix AI. Your voice has power."
