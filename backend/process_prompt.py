@@ -1,71 +1,24 @@
-from backend.character_db import match_characters
-import openai
-import os
-import json
+# backend/process_prompt.py
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+from openai import OpenAI
 
-LOG_DIR = "logs"
-os.makedirs(LOG_DIR, exist_ok=True)
+# Initialize the OpenAI client (uses environment variable if key is set)
+client = OpenAI()
 
-def generate_scene_data(prompt, character_db):
-    matched_characters = match_characters(prompt, character_db)
-
-    character_descriptions = []
-    for data in matched_characters.values():
-        personality = data["metadata"].get("personality", "")
-        backstory = data["metadata"].get("backstory", "")
-        style = data["metadata"].get("style", "")
-        char_summary = f"{data['name'].split('.')[0]} is {personality}. {backstory} Speaks like: {style}"
-        character_descriptions.append(char_summary)
-
-    system_message = (
-        "You are a screenwriter assistant. Break prompts into structured scenes. "
-        "Output a JSON list of shots with keys: character, dialogue, action, location, mood."
-    )
-
-    user_prompt = f"""
-    Prompt: '{prompt}'
-
-    Characters:
-    {chr(10).join(character_descriptions)}
-
-    Return JSON like:
-    [
-      {{
-        "character": "Alex",
-        "dialogue": "Let's get out of here!",
-        "action": "Alex grabs the bag and runs.",
-        "location": "Abandoned warehouse",
-        "mood": "tense"
-      }}
-    ]
-    """
-
-    enriched_prompt = openai.ChatCompletion.create(
+def generate_scene_data(prompt, characters=None):
+    enriched_prompt = client.chat.completions.create(
         model="gpt-4o",
         messages=[
-            {"role": "system", "content": system_message},
-            {"role": "user", "content": user_prompt}
+            {
+                "role": "system",
+                "content": (
+                    "You are a screenwriter. Return the response in JSON format. "
+                    "Describe a vivid scene including location, action, mood, and character dialogue."
+                ),
+            },
+            {"role": "user", "content": prompt}
         ]
     )
 
-    content = enriched_prompt.choices[0].message.content
-
-    log_path = os.path.join(LOG_DIR, f"scene_log_{hash(prompt)}.json")
-    with open(log_path, "w") as f:
-        json.dump({"original": prompt, "enriched": content}, f, indent=2)
-
-    try:
-        shot_data = json.loads(content)
-    except json.JSONDecodeError:
-        print("Failed to parse GPT JSON. Content was:")
-        print(content)
-        return None
-
-    scene_data = {
-        "prompt": prompt,
-        "characters": matched_characters,
-        "shots": shot_data
-    }
-    return scene_data
+    reply = enriched_prompt.choices[0].message.content
+    return reply
