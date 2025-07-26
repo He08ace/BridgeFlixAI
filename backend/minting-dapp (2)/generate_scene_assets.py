@@ -9,7 +9,7 @@ def generate_full_scene(scene_data):
     os.makedirs(output_dir, exist_ok=True)
 
     video_clips = []
-    for idx, shot in enumerate(scene_data["shots"]):
+    for idx, shot in scene_data.get("shots", [{"character": "Unknown", "dialogue": scene_data["prompt"]}]):
         char_name = shot["character"].lower()
         character_match = next((data for key, data in scene_data["characters"].items()
                                if char_name in data["name"].lower()), None)
@@ -27,10 +27,10 @@ def generate_full_scene(scene_data):
         USE_LIPSYNC = True
 
         if USE_LIPSYNC:
-            face_image_path = character_match["metadata"].get("face_image_path", "john_face.png")
+            face_image_path = character_match["metadata"].get("face_image_path", "default_face.png")
             video_path = lipsync_with_wav2lip(face_image_path, voice_file)
         else:
-            video_path = generate_video_clip(scene_data, base_clip=None)
+            video_path = generate_video_clip(scene_data)
 
         if not video_path:
             continue
