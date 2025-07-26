@@ -1,9 +1,8 @@
-# backend/process_prompt.py
-
+import os
 from openai import OpenAI
 
-# Initialize the OpenAI client (uses environment variable if key is set)
-client = OpenAI()
+# ✅ Grab the API key from the environment
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def generate_scene_data(prompt, characters=None):
     enriched_prompt = client.chat.completions.create(
