@@ -22,4 +22,10 @@ def load_characters(uploaded_files, voice_ids=None):
         vid = voice_ids[idx] if voice_ids and idx < len(voice_ids) else None
         save_character_reference(file, voice_id=vid)
     return CHARACTER_DB
-# character_db.py logic placeholder
+
+def match_characters(prompt, character_db):
+    matched = {}
+    for key, data in character_db.items():
+        if data["name"].split(".")[0].lower() in prompt.lower():
+            matched[key] = data
+    return matched
