@@ -11,7 +11,6 @@ os.makedirs(LOG_DIR, exist_ok=True)
 def generate_scene_data(prompt, character_db):
     matched_characters = match_characters(prompt, character_db)
 
-    # Build character context
     character_descriptions = []
     for data in matched_characters.values():
         personality = data["metadata"].get("personality", "")
@@ -26,7 +25,7 @@ def generate_scene_data(prompt, character_db):
     )
 
     user_prompt = f"""
-    Prompt: "{prompt}"
+    Prompt: '{prompt}'
 
     Characters:
     {chr(10).join(character_descriptions)}
@@ -70,4 +69,3 @@ def generate_scene_data(prompt, character_db):
         "shots": shot_data
     }
     return scene_data
-# process_prompt.py logic placeholder
